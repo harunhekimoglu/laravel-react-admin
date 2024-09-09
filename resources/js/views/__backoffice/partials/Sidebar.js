@@ -24,6 +24,7 @@ import {
     People as PeopleIcon,
     Security as SecurityIcon,
     ShowChart as ShowChartIcon,
+    Assignment as AssignmentIcon,
 } from '@material-ui/icons';
 
 import { APP } from '../../../config';
@@ -99,6 +100,22 @@ function Sidebar(props) {
                         </Tooltip>
                     ),
                     path: null,
+                },
+
+                {
+                    name: 'Tasks',
+                    icon: (
+                        <Tooltip
+                            title={
+                                minimized ? 'Tasks' : ''
+                            }
+                        >
+                            <AssignmentIcon />
+                        </Tooltip>
+                    ),
+                    path: NavigationUtils.route(
+                        'backoffice.resources.tasks.index',
+                    ),
                 },
             ],
         },
