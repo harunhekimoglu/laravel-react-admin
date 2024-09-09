@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 
 class UsersController extends Controller
 {
@@ -249,7 +250,9 @@ class UsersController extends Controller
      */
     public function pluck(Request $request) : JsonResponse
     {
-        $users = User::pluck('name', 'id')->toArray();
+        $users = Cache::remember('users_pluck', ( 60 * 60 ), function () {
+            return User::pluck('name', 'id')->toArray();
+        });
 
         return response()->json($users);
     }
