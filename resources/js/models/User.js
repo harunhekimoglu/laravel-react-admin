@@ -105,4 +105,19 @@ export default class User {
 
         return response.data;
     }
+
+    /**
+     * Fetch a pluck user list.
+     *
+     * @return {object}
+     */
+    static async pluck() {
+        const response = await axios.get('/api/v1/users/pluck');
+
+        if (response.status !== 200) {
+            return {};
+        }
+
+        return response.data;
+    }
 }
