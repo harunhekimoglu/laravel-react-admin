@@ -39,6 +39,9 @@ Route::namespace('Api')->name('api.')->group(function () {
                 });
             });
 
+            Route::prefix('users')->name('users.')->group(function () {
+                Route::get('pluck', 'UsersController@pluck')->name('pluck');
+            });
             Route::resource('users', 'UsersController', ['except' => ['edit', 'create']]);
             Route::prefix('users')->name('users.')->group(function () {
                 Route::patch('{user}/restore', 'UsersController@restore')->name('restore');
@@ -48,6 +51,8 @@ Route::namespace('Api')->name('api.')->group(function () {
                     Route::delete('/', 'UsersController@destroyAvatar')->name('destroy');
                 });
             });
+
+            Route::resource('tasks', 'TasksController', ['except' => ['edit', 'create']]);
         });
     });
 });
