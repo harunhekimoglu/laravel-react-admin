@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Task;
+use App\Jobs\StartTask;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -77,6 +78,14 @@ class TasksController extends Controller
             'title' => $request->input('title'),
             'description' => $request->input('description'),
         ]);
+
+        if ($task) {
+            $job = new StartTask($task);
+
+            $job->delay((new \DateTime())->modify('next monday'));
+
+            dispatch($job);
+        }
 
         return response()->json($task, 201);
     }
