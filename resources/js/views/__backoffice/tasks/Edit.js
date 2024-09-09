@@ -14,7 +14,7 @@ import {
     Delete as DeleteIcon,
 } from '@material-ui/icons';
 
-import { User, Task } from '../../../models';
+import { Task } from '../../../models';
 import { LinearIndeterminate } from '../../../ui/Loaders';
 import { Master as MasterLayout } from '../layouts';
 
@@ -25,26 +25,8 @@ import { TaskForm } from './Forms';
 function Edit(props) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({});
-    const [assignees, setAssignees] = useState({});
     const [task, setTask] = useState({});
     const [alert, setAlert] = useState({});
-
-    /**
-     * This should send an API request to fetch all resource.
-     *
-     * @param {object} params
-     *
-     * @return {undefined}
-     */
-    const fetchAssignees = async () => {
-        try {
-            const data = await User.pluck();
-
-            setAssignees(data);
-        } catch (error) {
-            //
-        }
-    };
 
     /**
      * Fetch the task.
@@ -180,10 +162,6 @@ function Edit(props) {
     };
 
     useEffect(() => {
-        if (Object.keys(assignees).length < 1) {
-            fetchAssignees();
-        }
-
         if (Object.keys(task).length < 1) {
             fetchTask(props.match.params.id);
         }
@@ -221,7 +199,6 @@ function Edit(props) {
             <TaskForm
                 {...other}
                 values={defaultTaskFormValues}
-                assignees={assignees}
                 handleSubmit={handleSubmit}
             />
         );

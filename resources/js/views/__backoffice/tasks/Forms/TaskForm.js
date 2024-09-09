@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+
+import { User } from '../../../../models';
 
 import {
     Button,
@@ -16,9 +18,34 @@ import {
 } from '@material-ui/core';
 
 const TaskForm = props => {
-    const { classes, values, assignees, handleSubmit } = props;
+    const [assignees, setAssignees] = useState([]);
 
-    const assigneeArray = Object.entries(assignees);
+    const { classes, values, handleSubmit } = props;
+
+    /**
+     * This should send an API request to fetch all resource.
+     *
+     * @param {object} params
+     *
+     * @return {undefined}
+     */
+    const fetchAssignees = async () => {
+        try {
+            let data = await User.pluck();
+
+            data = data ? Object.entries(data) : [];
+
+            setAssignees(data);
+        } catch (error) {
+            setAssignees([]);
+        }
+    };
+
+    useEffect(() => {
+        if (Object.keys(assignees).length < 1) {
+            fetchAssignees();
+        }
+    }, []);
 
     return (
         <Formik
@@ -96,7 +123,7 @@ const TaskForm = props => {
                                         Please select the assignee
                                     </MenuItem>
 
-                                    {assigneeArray.map((assignee) => (
+                                    {assignees && assignees.length > 0 && assignees.map((assignee) => (
                                         <MenuItem key={assignee[0]} value={assignee[0]}>
                                             {assignee[1]}
                                         </MenuItem>

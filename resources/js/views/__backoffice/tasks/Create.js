@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
     Paper,
@@ -6,7 +6,7 @@ import {
     withStyles,
 } from '@material-ui/core';
 
-import { User, Task } from '../../../models';
+import { Task } from '../../../models';
 import { LinearIndeterminate } from '../../../ui/Loaders';
 import { Master as MasterLayout } from '../layouts';
 
@@ -17,24 +17,6 @@ import { TaskForm } from './Forms';
 function Create(props) {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({});
-    const [assignees, setAssignees] = useState({});
-
-    /**
-     * This should send an API request to fetch all resource.
-     *
-     * @param {object} params
-     *
-     * @return {undefined}
-     */
-    const fetchAssignees = async () => {
-        try {
-            const data = await User.pluck();
-
-            setAssignees(data);
-        } catch (error) {
-            //
-        }
-    };
 
     /**
      * Handle form submit, this should send an API response
@@ -82,12 +64,6 @@ function Create(props) {
         }
     };
 
-    useEffect(() => {
-        if (Object.keys(assignees).length < 1) {
-            fetchAssignees();
-        }
-    }, []);
-
     const { classes, ...other } = props;
 
     const renderForm = () => {
@@ -101,7 +77,6 @@ function Create(props) {
             <TaskForm
                 {...other}
                 values={defaultTaskFormValues}
-                assignees={assignees}
                 handleSubmit={handleSubmit}
             />
         );
