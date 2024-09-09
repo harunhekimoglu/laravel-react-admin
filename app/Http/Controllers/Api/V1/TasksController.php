@@ -105,18 +105,27 @@ class TasksController extends Controller
     public function update(Request $request, Task $task) : JsonResponse
     {
         $request->validate([
+            'is_drop' => 'required|boolean',
             'user_id' => 'nullable|exists:users,id',
             'status' => 'required|in:todo,in-progress,done',
-            'title' => 'required|string|max:255',
+            'title' => 'required_if:is_drop,0,false|string|max:255',
             'description' => 'nullable|string|max:510',
         ]);
 
-        $task->update([
-            'user_id' => $request->input('user_id'),
-            'status' => $request->input('status'),
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-        ]);
+        $isDrop = !! $request->input('is_drop');
+
+        if ($isDrop) {
+            $task->update([
+                'status' => $request->input('status'),
+            ]);
+        } else {
+            $task->update([
+                'user_id' => $request->input('user_id'),
+                'status' => $request->input('status'),
+                'title' => $request->input('title'),
+                'description' => $request->input('description'),
+            ]);
+        }
 
         return response()->json($task);
     }

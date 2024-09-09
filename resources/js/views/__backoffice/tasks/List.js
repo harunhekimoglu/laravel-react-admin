@@ -78,6 +78,7 @@ function List(props) {
                 <Board
                     history={history}
                     tasks={tasks}
+                    fetchTasks={fetchTasks}
                 />
             )}
         </MasterLayout>

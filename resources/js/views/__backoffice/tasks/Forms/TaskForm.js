@@ -70,6 +70,7 @@ const TaskForm = props => {
                 setFieldValue,
             }) => (
                 <Form>
+                    <Input id="is_drop" type="hidden" name="is_drop" value={values.is_drop} />
                     <Grid container spacing={24}>
                         <Grid item xs={12} sm={12}>
                             <FormControl

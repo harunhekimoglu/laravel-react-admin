@@ -210,6 +210,7 @@ function Edit(props) {
         }
 
         const defaultTaskFormValues = {
+            is_drop: false,
             user_id: task.user_id === null ? '' : task.user_id,
             status: task.status === null ? '' : task.status,
             title: task.title === null ? '' : task.title,
