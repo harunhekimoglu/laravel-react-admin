@@ -239,4 +239,18 @@ class UsersController extends Controller
             $users->where($property, _to_sql_operator($keyword), "{$value}");
         }
     }
+
+    /**
+     * Pluck all resource.
+     *
+     * @param Illuminate\Http\Request $request
+     *
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function pluck(Request $request) : JsonResponse
+    {
+        $users = User::pluck('name', 'id')->toArray();
+
+        return response()->json($users);
+    }
 }
